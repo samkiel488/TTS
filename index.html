@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ UltraTTS - AI Text-to-Speech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>UltraTTS</h1>
+            <div class="theme-toggle">🌓</div>
+        </header>
+        
+        <div class="main-content">
+            <!-- Text Input -->
+            <div class="text-box">
+                <textarea id="text-input" placeholder="Type or paste text here..."></textarea>
+                <div class="file-upload">
+                    <input type="file" id="file-upload" accept=".txt,.pdf,.docx,.jpg,.png">
+                    <label for="file-upload">📁 Upload File/Image</label>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="controls">
+                <div class="voice-selector">
+                    <select id="voice-select"></select>
+                    <button id="play-btn">▶️ Play</button>
+                    <button id="pause-btn">⏸️ Pause</button>
+                    <button id="stop-btn">⏹️ Stop</button>
+                </div>
+                
+                <div class="settings">
+                    <label>Speed: <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1"></label>
+                    <label>Pitch: <input type="range" id="pitch" min="0.1" max="2" step="0.1" value="1"></label>
+                    <button id="ssml-editor">✏️ Edit SSML</button>
+                </div>
+            </div>
+            
+            <!-- Advanced Features Panel -->
+            <div class="advanced-panel">
+                <button id="ai-voice-btn">🤖 Enable AI Voices</button>
+                <button id="export-btn">📤 Export Audio</button>
+                <button id="bg-music-btn">🎵 Add Background Music</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
