@@ -3,51 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ UltraTTS - AI Text-to-Speech</title>
+    <title>UltraTTS Pro - AI Text-to-Speech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="app-container">
-        <header>
-            <h1>UltraTTS</h1>
-            <div class="theme-toggle">🌓</div>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div id="app" class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <i class="fas fa-microphone-alt mr-2"></i>UltraTTS Pro
+            </h1>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="settings-btn" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
         </header>
-        
-        <div class="main-content">
-            <!-- Text Input -->
-            <div class="text-box">
-                <textarea id="text-input" placeholder="Type or paste text here..."></textarea>
-                <div class="file-upload">
-                    <input type="file" id="file-upload" accept=".txt,.pdf,.docx,.jpg,.png">
-                    <label for="file-upload">📁 Upload File/Image</label>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Text Input Panel -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">Text Input</h2>
+                    <textarea id="text-input" 
+                        class="w-full h-64 p-4 bg-gray-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Enter text to synthesize..."></textarea>
+                    
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="flex space-x-2">
+                            <input type="file" id="file-upload" class="hidden" accept=".txt,.pdf,.docx,.jpg,.jpeg,.png">
+                            <button onclick="document.getElementById('file-upload').click()" 
+                                class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+                                <i class="fas fa-upload mr-2"></i>Upload File
+                            </button>
+                            <button id="ocr-btn" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+                                <i class="fas fa-camera mr-2"></i>OCR Image
+                            </button>
+                        </div>
+                        <span id="char-count" class="text-sm text-gray-400">0 characters</span>
+                    </div>
+                </div>
+
+                <!-- Voice Controls -->
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">Voice Controls</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Voice</label>
+                            <select id="voice-select" class="w-full p-3 bg-gray-700 rounded-lg">
+                                <option value="">Loading voices...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Model</label>
+                            <select id="model-select" class="w-full p-3 bg-gray-700 rounded-lg">
+                                <option value="eleven_monolingual_v1">Eleven Multilingual v1</option>
+                                <option value="eleven_turbo_v2">Eleven Turbo v2</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Speed</label>
+                            <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" 
+                                class="w-full accent-purple-500">
+                            <span id="speed-value" class="text-sm text-gray-400">1.0x</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Stability</label>
+                            <input type="range" id="stability" min="0" max="1" step="0.1" value="0.5"
+                                class="w-full accent-purple-500">
+                            <span id="stability-value" class="text-sm text-gray-400">0.5</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Similarity</label>
+                            <input type="range" id="similarity" min="0" max="1" step="0.1" value="0.75"
+                                class="w-full accent-purple-500">
+                            <span id="similarity-value" class="text-sm text-gray-400">0.75</span>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-6">
+                        <button id="play-btn" 
+                            class="flex-1 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg transition">
+                            <i class="fas fa-play mr-2"></i>Play
+                        </button>
+                        <button id="pause-btn"
+                            class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button id="stop-btn"
+                            class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Controls -->
-            <div class="controls">
-                <div class="voice-selector">
-                    <select id="voice-select"></select>
-                    <button id="play-btn">▶️ Play</button>
-                    <button id="pause-btn">⏸️ Pause</button>
-                    <button id="stop-btn">⏹️ Stop</button>
+
+            <!-- Right Sidebar -->
+            <div class="space-y-4">
+                <!-- SSML Editor -->
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">SSML Editor</h2>
+                    <button id="ssml-toggle" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                        <i class="fas fa-code mr-2"></i>Open SSML Editor
+                    </button>
                 </div>
-                
-                <div class="settings">
-                    <label>Speed: <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1"></label>
-                    <label>Pitch: <input type="range" id="pitch" min="0.1" max="2" step="0.1" value="1"></label>
-                    <button id="ssml-editor">✏️ Edit SSML</button>
+
+                <!-- Export Options -->
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">Export</h2>
+                    <div class="space-y-2">
+                        <button id="export-mp3" 
+                            class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
+                            <i class="fas fa-download mr-2"></i>Export MP3
+                        </button>
+                        <button id="export-wav"
+                            class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
+                            <i class="fas fa-download mr-2"></i>Export WAV
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Advanced Features Panel -->
-            <div class="advanced-panel">
-                <button id="ai-voice-btn">🤖 Enable AI Voices</button>
-                <button id="export-btn">📤 Export Audio</button>
-                <button id="bg-music-btn">🎵 Add Background Music </button>
+
+                <!-- Background Music -->
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">Background Music</h2>
+                    <div class="space-y-4">
+                        <select id="bg-music-select" class="w-full p-3 bg-gray-700 rounded-lg">
+                            <option value="">No Background</option>
+                            <option value="ambient">Ambient</option>
+                            <option value="classical">Classical</option>
+                            <option value="lofi">Lo-fi</option>
+                        </select>
+                        <input type="range" id="bg-volume" min="0" max="1" step="0.1" value="0.3"
+                            class="w-full accent-purple-500">
+                    </div>
+                </div>
+
+                <!-- API Settings -->
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">API Settings</h2>
+                    <input type="password" id="api-key" placeholder="Enter ElevenLabs API Key"
+                        class="w-full p-3 bg-gray-700 rounded-lg mb-2">
+                    <button id="save-api-key" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                        Save Key
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- SSML Modal -->
+    <div id="ssml-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-4xl w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">SSML Editor</h3>
+                <button id="close-ssml" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <textarea id="ssml-editor" class="w-full h-96 p-4 bg-gray-700 rounded-lg font-mono text-sm"
+                placeholder="Enter SSML here..."></textarea>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button id="apply-ssml" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                    Apply SSML
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg.js/0.12.5/ffmpeg.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
