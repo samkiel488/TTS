@@ -41,6 +41,7 @@ header {
   background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
   border-bottom: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Cards */
@@ -277,7 +278,11 @@ header {
 }
 
 /* Dark/Light Theme */
-body.light {
+html.dark body {
+  /* Dark theme variables are already set as default in :root */
+}
+
+html:not(.dark) body {
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
   --bg-tertiary: #e2e8f0;
@@ -286,12 +291,44 @@ body.light {
   --border-color: #cbd5e1;
 }
 
-body.light .form-input,
-body.light .form-select,
-body.light .form-textarea {
+html:not(.dark) .form-input,
+html:not(.dark) .form-select,
+html:not(.dark) .form-textarea {
   background: #ffffff;
   border-color: var(--border-color);
   color: var(--text-primary);
+}
+
+html:not(.dark) .bg-gray-900 {
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) .bg-gray-800 {
+  background-color: #f8fafc !important;
+}
+
+html:not(.dark) .bg-gray-700 {
+  background-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .text-white {
+  color: #1e293b !important;
+}
+
+html:not(.dark) .text-gray-400 {
+  color: #475569 !important;
+}
+
+html:not(.dark) .border-gray-700 {
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) .hover\:bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .hover\:bg-gray-600:hover {
+  background-color: #d1d5db !important;
 }
 
 /* Custom Scrollbar */
